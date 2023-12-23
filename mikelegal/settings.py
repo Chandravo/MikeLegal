@@ -49,6 +49,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -149,10 +150,13 @@ CHANNEL_LAYERS = {
     },
 }
 
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ORIGIN_ALLOW_ALL = True
+
 SUPERUSER_USERNAME = os.getenv('SUPERUSER_USERNAME')
 SUPERUSER_PASSWORD = os.getenv('SUPERUSER_PASSWORD')
 
-CSRF_TRUSTED_ORIGINS = ["*"]
+CSRF_TRUSTED_ORIGINS = ["https://mikelegal.onrender.com/"]
 
 NLTK_DATA_DIR = os.path.join(BASE_DIR, 'nltk_data')
 os.environ['NLTK_DATA'] = NLTK_DATA_DIR
