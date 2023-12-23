@@ -56,6 +56,10 @@
             display: block;
             margin-bottom: 5px;
         }
+        .notification {
+            color: #007bff;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -68,7 +72,7 @@
                 <form>
                     <div class="form-group">
                         <label for="chat-text" class="h4 pt-5 mt-5 text-center">Chatroom</label>
-                        <textarea class="form-control" id="chat-text" rows="10" disabled></textarea>
+                        <textarea class="form-control" id="chat-text" rows="10" disabled>{{text}}</textarea>
                     </div>
                     <div class="form-group">
                         <label for="input">Message</label>
@@ -120,7 +124,10 @@
 
         function handleNewUserNotification(data) {
             console.log(data);
+            const chatText = document.querySelector('#chat-text');
             document.querySelector('#chat-text').value += (data.message + '\n');
+            // document.querySelector('#chat-text').value += '<span style="color: #007bff;">' + data.message + '</span>\n';
+            // chatText.innerHTML += '<div class="message notification">' + data.message + '</div>';
         }
 
         chatSocket.addEventListener('message', function (e) {
