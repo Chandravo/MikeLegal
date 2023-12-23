@@ -1,4 +1,4 @@
-from registration.models import User
+from django.contrib.auth.models import User
 from django.core.management.base import BaseCommand
 from django.conf import settings
 
@@ -9,7 +9,7 @@ class Command(BaseCommand):
         # print(settings.SUPERUSER_EMAIL, settings.SUPERUSER_PASSWORD)
         if not User.objects.filter(email=settings.SUPERUSER_EMAIL).exists():
             User.objects.create_superuser(
-                email=settings.SUPERUSER_EMAIL,
+                username=settings.SUPERUSER_USERNAME,
                 password=settings.SUPERUSER_PASSWORD
             )
         print('Superuser has been created.')
