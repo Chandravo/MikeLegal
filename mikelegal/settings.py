@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 from decouple import config
-
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -140,3 +140,7 @@ CHANNEL_LAYERS = {
         },
     },
 }
+
+NLTK_DATA_DIR = os.path.join(BASE_DIR, 'nltk_data')
+os.environ['NLTK_DATA'] = NLTK_DATA_DIR
+import nltk
