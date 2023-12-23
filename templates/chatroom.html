@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <title>TagIT</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8f9fa; /* Light gray background */
+            padding-top: 50px;
+        }
+
+        h1 {
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+
+        .container {
+            background-color: #ffffff; /* White container background */
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        textarea, input[type="text"] {
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ced4da; /* Gray border */
+            border-radius: 5px;
+            background-color: #f5f5f5; /* Light gray background */
+            resize: none;
+            font-size: 16px;
+            color: #333;
+        }
+
+        input[type="submit"] {
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        label {
+            color: #333;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <center>
+        <h1> Room Key : {{key}} </h1>
+    </center>
+    <div class="container">
+        <div class="row d-flex justify-content-center">
+            <div class="col-6">
+                <form>
+                    <div class="form-group">
+                        <label for="chat-text" class="h4 pt-5 mt-5 text-center">Chatroom</label>
+                        <textarea class="form-control" id="chat-text" rows="10" disabled></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="input">Message</label>
+                        <input class="form-control" id="input" type="text">
+                    </div>
+                    <input class="btn btn-primary btn-lg btn-block" id="submit" type="button" value="Send">
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- {{ request.user.username|json_script:"user_username" }} -->
+     {{ key|json_script:"room-name" }}
+
+    <!--{% if user.is_anonymous %}
+    {{ "Finder"|json_script:"user_username" }}
+    {% else %}
+    {{ "Owner"|json_script:"user_username" }}
+    {% endif %} -->
+
+    <script>
+        // const user_username = JSON.parse(document.getElementById('user_username').textContent);
+        const roomName = JSON.parse(document.getElementById('room-name').textContent);
+        const chatSocket = new WebSocket(
+            'ws://' +
+            window.location.host +
+            '/ws/chat/' +
+            roomName +
+            '/'
+        );
+       
+        document.querySelector('#submit').onclick = function (e) {
+            const messageInputDom = document.querySelector('#input');
+            const message = messageInputDom.value;
+            chatSocket.send(JSON.stringify({
+                'message': message,
+                'room': roomName,
+                // 'username': user_username,
+            }));
+            messageInputDom.value = '';
+        };
+
+
+
+
+        
+
+        
+
+        function handleNewUserNotification(data) {
+            console.log(data);
+            document.querySelector('#chat-text').value += (data.message + '\n');
+        }
+
+        chatSocket.addEventListener('message', function (e) {
+            const data = JSON.parse(e.data);
+            if (data.type == "notification") {
+                handleNewUserNotification(data);
+            }
+        });
+
+        chatSocket.onmessage = function (e) {
+            const data = JSON.parse(e.data);
+            if (data.class == "notification") {
+                handleNewUserNotification(data);
+            }
+            else{
+                console.log("class = "+data.class)
+                
+                console.log(data)
+                document.querySelector('#chat-text').value += ('Anonymous' + ': ' + data.message + '\n')
+            }
+        }
+
+        var input = document.getElementById("input");
+
+        // Execute a function when the user presses a key on the keyboard
+        input.addEventListener("keypress", function(event) {
+        // If the user presses the "Enter" key on the keyboard
+        if (event.key === "Enter") {
+            // Cancel the default action, if needed
+            event.preventDefault();
+            // Trigger the button element with a click
+            document.getElementById("submit").click();
+        }
+        }); 
+    </script>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous">
+    </script>
+
+    
+</body>
+</html>
