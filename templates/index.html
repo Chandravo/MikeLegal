@@ -1,0 +1,101 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Room Options</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        h1 {
+            color: #007bff;
+        }
+
+        .options {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .button {
+            margin: 0 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .button-join {
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+        }
+
+        .button-create {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+        }
+
+        /* Style for the form */
+        form {
+            margin-top: 20px;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+
+        .button-join-form {
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Chat Room Options</h1>
+    
+    <div class="options">
+        
+        <a href="{% url 'createRoom' %}"><button class="button button-create">Create a New Room</button></a>
+    </div>
+
+    <!-- Form for joining a room -->
+    <form id="joinRoomForm" method="POST" action="{% url 'joinRoom' %}">
+        {% csrf_token %}
+        <label for="roomKey">Enter Room Key:</label>
+        <input type="text" id="key" name="key" required>
+        <button class="button button-join-form" type="submit">Join Room</button>
+    </form>
+    {{error}}   
+
+    <script>
+        function joinRoom() {
+            // Show the join room form
+            document.getElementById("joinRoomForm").style.display = "block";
+        }
+
+        function createNewRoom() {
+            // Add your logic for creating a new room
+            alert("You clicked 'Create a New Room'. Implement the logic to create a new room here.");
+        }
+
+        function joinRoomFormSubmit(event) {
+            // Add your logic for handling the form submission
+            event.preventDefault();
+            const roomKey = document.getElementById("roomKey").value;
+            alert("Joining room with key: " + roomKey);
+        }
+    </script>
+</body>
+</html>
