@@ -15,7 +15,7 @@ from app.routing import websocket_urlpatterns
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'mikelegal.settings')
 
-application = get_asgi_application()
+# application = get_asgi_application()
 
 django_asgi_app = get_asgi_application()
 
