@@ -35,6 +35,7 @@ ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
     'daphne',
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -143,7 +144,7 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [(REDIS_HOST)],
+            "hosts": [(REDIS_HOST,6379)],
         },
     },
 }
