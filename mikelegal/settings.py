@@ -160,7 +160,7 @@ CORS_ORIGIN_ALLOW_ALL = True
 SUPERUSER_USERNAME = os.getenv('SUPERUSER_USERNAME')
 SUPERUSER_PASSWORD = os.getenv('SUPERUSER_PASSWORD')
 
-CSRF_TRUSTED_ORIGINS = ["https://mikelegal.onrender.com/"]
+CSRF_TRUSTED_ORIGINS = ["https://mikelegal.onrender.com"]
 
 NLTK_DATA_DIR = os.path.join(BASE_DIR, 'nltk_data')
 os.environ['NLTK_DATA'] = NLTK_DATA_DIR
